@@ -38,7 +38,7 @@ public class Function1(ILogger<Function1> logger)
         return new OkObjectResult($"Here's the request you sent:\n\n" +
             $"Url: {url}\n\n" +
             $"Query parameters:\n" +
-            $"{queryString}\n" +
+            $"{queryString}\n\n" +
             $"Post parameters:\n\n" +
             $"{formString}");
     }
