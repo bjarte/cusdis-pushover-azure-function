@@ -14,3 +14,23 @@ _Pushover_ is a webservice and an Android/iPhone app that lets you push notifica
 ## Pushover API docs
 
 <https://pushover.net/api>
+
+
+
+## Azure function
+
+Function deployed by GitHub Action on each commit.
+
+Function available here:
+https://xyz.azurewebsites.net/api/cusdis
+
+## Secrets
+
+Store secrets in local.settings.json for local development. Create it by copying local.settings.json.example and filling in the values.
+
+In Azure, create the following application settings for the function:
+
+- `PushoverToken`: Your Pushover user key
+- `PushoverUser`: Your Pushover app token
+- `PushoverApiUrl`: The url for the Pushover API
+- `CusdisUrl`: For ease of use, link to the Cusdis dashboard

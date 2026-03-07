@@ -1,0 +1,11 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+        "PushoverToken": "xyz",
+        "PushoverUser": "abc",
+        "PushoverApiUrl": "https://example.com",
+        "CusdisUrl": "https://anotherexample.com"
+    }
+}
