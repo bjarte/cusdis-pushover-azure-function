@@ -22,7 +22,7 @@ _Pushover_ is a webservice and an Android/iPhone app that lets you push notifica
 Function deployed by GitHub Action on each commit.
 
 Function available here:
-https://xyz.azurewebsites.net/api/cusdis
+https://xyz.azurewebsites.net/api/cusdisnotification
 
 ## Secrets
 
