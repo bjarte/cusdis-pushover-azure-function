@@ -6,20 +6,25 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace CusdisPushoverWebhook;
 
 public class CusdisNotification(
     IConfiguration configuration,
-    JsonSerializerOptions jsonOptions)
+    JsonSerializerOptions jsonOptions,
+    ILogger<CusdisNotification> logger)
 {
     [Function("CusdisNotification")]
     public async Task<IActionResult> RunAsync(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", "get")]
         HttpRequest request)
     {
+        logger.LogInformation("Processing Cusdis webhook request");
+
         if (!request.Method.Equals("POST"))
         {
+            logger.LogError("Invalid request method: Only POST allowed");
             return new BadRequestObjectResult(
                 "Invalid request method: Only POST allowed");
         }
@@ -31,6 +36,7 @@ public class CusdisNotification(
         }
         catch (JsonException)
         {
+            logger.LogError("Invalid webhook data: Request body did not match expected schema");
             return new NotFoundObjectResult(
                 "Invalid webhook data: Request body did not match expected schema");
         }
@@ -38,6 +44,7 @@ public class CusdisNotification(
         var commentData = webhookData?.Data;
         if (commentData == null)
         {
+            logger.LogError("Invalid webhook data: {webhookDataJson}", JsonSerializer.Serialize(webhookData));
             return new NotFoundObjectResult(
                 $"Invalid webhook data: {JsonSerializer.Serialize(webhookData)}");
         }
@@ -71,15 +78,18 @@ public class CusdisNotification(
 
             if (response.IsSuccessStatusCode)
             {
-                responseMessage.Append("Notification sent successfully!");
+                logger.LogInformation("Notification sent successfully to Pushover!");
+                responseMessage.Append("Notification sent successfully Pushover!");
             }
             else
             {
+                logger.LogError("Failed to send notification: {StatusCode} - {ReasonPhrase}", response.StatusCode, response.ReasonPhrase);
                 responseMessage.Append($"Failed to send notification: {response.StatusCode} - {response.ReasonPhrase}");
             }
         }
         catch (Exception exception)
         {
+            logger.LogError("Failed to send notification: {Message}", exception.Message);
             responseMessage.Append($"Failed to send notification: {exception.Message}");
         }
 
